@@ -1,0 +1,40 @@
+{
+  "placeholderImages": [
+    {
+      "id": "store-1",
+      "description": "A modern coffee shop interior.",
+      "imageUrl": "https://picsum.photos/seed/store1/600/400",
+      "imageHint": "coffee shop"
+    },
+    {
+      "id": "store-2",
+      "description": "A cozy bookstore with shelves full of books.",
+      "imageUrl": "https://picsum.photos/seed/store2/600/400",
+      "imageHint": "bookstore interior"
+    },
+    {
+      "id": "store-3",
+      "description": "A vibrant and colorful clothing boutique.",
+      "imageUrl": "https://picsum.photos/seed/store3/600/400",
+      "imageHint": "clothing boutique"
+    },
+    {
+      "id": "store-4",
+      "description": "A fresh and organic grocery store.",
+      "imageUrl": "https://picsum.photos/seed/store4/600/400",
+      "imageHint": "grocery store"
+    },
+    {
+      "id": "store-5",
+      "description": "A sleek electronics store with modern gadgets.",
+      "imageUrl": "https://picsum.photos/seed/store5/600/400",
+      "imageHint": "electronics store"
+    },
+    {
+      "id": "store-6",
+      "description": "A charming bakery with delicious pastries.",
+      "imageUrl": "https://picsum.photos/seed/store6/600/400",
+      "imageHint": "bakery pastries"
+    }
+  ]
+}

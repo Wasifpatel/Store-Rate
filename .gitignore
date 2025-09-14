@@ -13,6 +13,9 @@ dist/
 build/
 .next/
 
+# Vite cache
+.vite/
+
 # Logs
 *.log
 npm-debug.log*

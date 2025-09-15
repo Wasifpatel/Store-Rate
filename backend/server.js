@@ -1,21 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const storeRoutes = require('./routes/stores');
+const ratingRoutes = require('./routes/ratings');
+const adminRoutes = require('./routes/admin');
 require('dotenv').config();
-
-// Add error handling for route imports
-let authRoutes, userRoutes, storeRoutes, ratingRoutes, adminRoutes;
-
-try {
-  authRoutes = require('./routes/auth');
-  userRoutes = require('./routes/users');
-  storeRoutes = require('./routes/stores');
-  ratingRoutes = require('./routes/ratings');
-  adminRoutes = require('./routes/admin');
-  console.log('All routes loaded successfully');
-} catch (error) {
-  console.error('Error loading routes:', error);
-  process.exit(1);
-}
 
 const app = express();
 
@@ -59,46 +49,18 @@ app.get('/', (req, res) => {
 // Database test endpoint
 app.get('/api/test-db', async (req, res) => {
   try {
-    // Debug environment variables
-    const envVars = {
-      DB_HOST: process.env.DB_HOST,
-      MYSQLHOST: process.env.MYSQLHOST,
-      DB_USER: process.env.DB_USER,
-      MYSQLUSER: process.env.MYSQLUSER,
-      DB_NAME: process.env.DB_NAME,
-      MYSQLDATABASE: process.env.MYSQLDATABASE,
-      MYSQLPORT: process.env.MYSQLPORT
-    };
-    
-    console.log('Environment variables:', envVars);
-    
     const pool = require('./config/db');
-    console.log('Database pool created successfully');
-    
     const [rows] = await pool.execute('SELECT 1 as test');
-    console.log('Database query executed successfully');
-    
     res.json({ 
       status: 'success', 
       message: 'Database connected successfully',
-      test: rows[0],
-      envVars: envVars
+      test: rows[0]
     });
   } catch (error) {
-    console.error('Database connection error:', error);
     res.status(500).json({ 
       status: 'error', 
       message: 'Database connection failed',
-      error: error.message,
-      envVars: {
-        DB_HOST: process.env.DB_HOST,
-        MYSQLHOST: process.env.MYSQLHOST,
-        DB_USER: process.env.DB_USER,
-        MYSQLUSER: process.env.MYSQLUSER,
-        DB_NAME: process.env.DB_NAME,
-        MYSQLDATABASE: process.env.MYSQLDATABASE,
-        MYSQLPORT: process.env.MYSQLPORT
-      }
+      error: error.message
     });
   }
 });

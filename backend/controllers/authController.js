@@ -10,7 +10,7 @@ exports.signup = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { username, name, email, address, password, role } = req.body;
+  const { name, email, address, password, role } = req.body;
 
   try {
     let user = await User.findByEmail(email);
@@ -18,12 +18,7 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: 'User with that email already exists' });
     }
 
-    user = await User.findByUsername(username);
-    if (user) {
-      return res.status(400).json({ message: 'User with that username already exists' });
-    }
-
-    const userId = await User.create(username, name, email, address, password, role);
+    const userId = await User.create(name, email, address, password, role);
 
     const payload = { user: { id: userId, role: role } };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -41,10 +36,10 @@ exports.login = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { loginIdentifier, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const user = await User.findByLoginIdentifier(loginIdentifier);
+    const user = await User.findByEmail(email);
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }

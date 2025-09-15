@@ -49,18 +49,39 @@ app.get('/', (req, res) => {
 // Database test endpoint
 app.get('/api/test-db', async (req, res) => {
   try {
+    // Debug environment variables
+    const envVars = {
+      DB_HOST: process.env.DB_HOST,
+      MYSQLHOST: process.env.MYSQLHOST,
+      DB_USER: process.env.DB_USER,
+      MYSQLUSER: process.env.MYSQLUSER,
+      DB_NAME: process.env.DB_NAME,
+      MYSQLDATABASE: process.env.MYSQLDATABASE,
+      MYSQLPORT: process.env.MYSQLPORT
+    };
+    
     const pool = require('./config/db');
     const [rows] = await pool.execute('SELECT 1 as test');
     res.json({ 
       status: 'success', 
       message: 'Database connected successfully',
-      test: rows[0]
+      test: rows[0],
+      envVars: envVars
     });
   } catch (error) {
     res.status(500).json({ 
       status: 'error', 
       message: 'Database connection failed',
-      error: error.message
+      error: error.message,
+      envVars: {
+        DB_HOST: process.env.DB_HOST,
+        MYSQLHOST: process.env.MYSQLHOST,
+        DB_USER: process.env.DB_USER,
+        MYSQLUSER: process.env.MYSQLUSER,
+        DB_NAME: process.env.DB_NAME,
+        MYSQLDATABASE: process.env.MYSQLDATABASE,
+        MYSQLPORT: process.env.MYSQLPORT
+      }
     });
   }
 });

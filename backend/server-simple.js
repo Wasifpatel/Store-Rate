@@ -30,10 +30,29 @@ app.get('/api/test', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+// Add process error handling
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  process.exit(0);
+});
+
+const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log('Environment variables:', {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT
+  });
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  server.close(() => {
+    console.log('Process terminated');
   });
 });

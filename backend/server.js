@@ -46,6 +46,25 @@ app.get('/', (req, res) => {
   });
 });
 
+// Database test endpoint
+app.get('/api/test-db', async (req, res) => {
+  try {
+    const pool = require('./config/db');
+    const [rows] = await pool.execute('SELECT 1 as test');
+    res.json({ 
+      status: 'success', 
+      message: 'Database connected successfully',
+      test: rows[0]
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 'error', 
+      message: 'Database connection failed',
+      error: error.message
+    });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

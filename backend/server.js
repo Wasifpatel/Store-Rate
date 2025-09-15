@@ -1,11 +1,21 @@
 const express = require('express');
 const cors = require('cors');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
-const storeRoutes = require('./routes/stores');
-const ratingRoutes = require('./routes/ratings');
-const adminRoutes = require('./routes/admin');
 require('dotenv').config();
+
+// Add error handling for route imports
+let authRoutes, userRoutes, storeRoutes, ratingRoutes, adminRoutes;
+
+try {
+  authRoutes = require('./routes/auth');
+  userRoutes = require('./routes/users');
+  storeRoutes = require('./routes/stores');
+  ratingRoutes = require('./routes/ratings');
+  adminRoutes = require('./routes/admin');
+  console.log('All routes loaded successfully');
+} catch (error) {
+  console.error('Error loading routes:', error);
+  process.exit(1);
+}
 
 const app = express();
 
@@ -60,8 +70,14 @@ app.get('/api/test-db', async (req, res) => {
       MYSQLPORT: process.env.MYSQLPORT
     };
     
+    console.log('Environment variables:', envVars);
+    
     const pool = require('./config/db');
+    console.log('Database pool created successfully');
+    
     const [rows] = await pool.execute('SELECT 1 as test');
+    console.log('Database query executed successfully');
+    
     res.json({ 
       status: 'success', 
       message: 'Database connected successfully',
@@ -69,6 +85,7 @@ app.get('/api/test-db', async (req, res) => {
       envVars: envVars
     });
   } catch (error) {
+    console.error('Database connection error:', error);
     res.status(500).json({ 
       status: 'error', 
       message: 'Database connection failed',
